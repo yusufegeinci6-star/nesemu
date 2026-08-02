@@ -1,4 +1,4 @@
-// Copyright 2015-2016 Espressif Systems (Shanghai) PTE LTD
+a// Copyright 2015-2016 Espressif Systems (Shanghai) PTE LTD
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
 #include "soc/gpio_struct.h"
 #include "../config.h"
 #include "pretty_effect.h"
-#include "esp_deep_sleep.h"
+#include "esp32_sleep.h"
 #include "Controller.h"
 
 //Bit0 Bit1 Bit2 Bit3 Bit4 Bit5 Bit6 Bit7
