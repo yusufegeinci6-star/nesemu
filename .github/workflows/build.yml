@@ -8,33 +8,35 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: ubuntu:20.04
     steps:
-      - name: Install base tools
-        run: |
-          export DEBIAN_FRONTEND=noninteractive
-          apt-get update
-          apt-get install -y curl git python3 build-essential
-
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Install arduino-cli
-        run: |
-          curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
-          echo "$PWD/bin" >> $GITHUB_PATH
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-      - name: Install ESP32 core
-        run: |
-          arduino-cli config init
-          arduino-cli config add board_manager.additional_urls https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
-          arduino-cli core update-index
-          arduino-cli core install esp32:esp32@1.0.6
+      - name: Install PlatformIO
+        run: pip install platformio
 
-      - name: Compile sketch
+      - name: Create platformio.ini
         run: |
-          arduino-cli compile --fqbn esp32:esp32:esp32 . --output-dir build
+          cat > platformio.ini << 'EOF'
+          [env:esp32dev]
+          platform = espressif32@3.5.0
+          board = esp32dev
+          framework = arduino
+          EOF
 
+      - name: Build firmware
+        run: pio run
+
+      - name: Upload firmware
+        uses: actions/upload-artifact@v4
+        with:
+          name: nesemu-firmware
+          path: .pio/build/esp32dev/firmware.bin2
       - name: Upload firmware
         uses: actions/upload-artifact@v4
         with:
