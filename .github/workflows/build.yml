@@ -8,10 +8,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: ubuntu:18.04
+    container: ubuntu:20.04
     steps:
       - name: Install base tools
         run: |
+          export DEBIAN_FRONTEND=noninteractive
           apt-get update
           apt-get install -y curl git python3 build-essential
 
