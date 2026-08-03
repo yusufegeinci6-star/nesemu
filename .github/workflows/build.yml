@@ -7,8 +7,14 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+    container: ubuntu:18.04
     steps:
+      - name: Install base tools
+        run: |
+          apt-get update
+          apt-get install -y curl git python3 build-essential
+
       - name: Checkout repo
         uses: actions/checkout@v4
 
